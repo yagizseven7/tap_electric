@@ -1,0 +1,31 @@
+# Continuous integration: GitHub runs the tests on every push and pull request,
+# so a change that breaks something is caught before it's merged.
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # The CPU-only build of PyTorch is ~200 MB instead of ~2 GB
+      - name: Install PyTorch (CPU)
+        run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest-cov
+
+      - name: Fast tests
+        run: pytest -m "not slow"
+
+      - name: Slow tests (training, full loop) with coverage
+        run: pytest --cov --cov-report=term-missing
