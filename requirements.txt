@@ -1,0 +1,26 @@
+# API
+fastapi
+uvicorn[standard]
+pydantic
+python-multipart
+
+# Storage
+sqlalchemy
+boto3
+
+# Images
+pillow
+opencv-python-headless
+numpy
+
+# Model and training
+torch
+torchvision          # optional: only silences a warning from the image processor
+transformers
+tokenizers
+mlflow               # experiment tracking; `mlflow ui` shows the training charts
+
+# Tests
+pytest
+pytest-cov           # coverage: pytest --cov
+httpx

@@ -1,0 +1,27 @@
+[project]
+name = "qr-scan-service"
+version = "0.1.0"
+description = "Collects charger-sticker scans and trains, validates and serves the model that reads them."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: trains a model or runs the whole loop (skip with: pytest -m 'not slow')",
+]
+filterwarnings = [
+    # noise from third-party libraries, not from our code
+    "ignore::DeprecationWarning",
+    "ignore::FutureWarning",
+    "ignore:.*torchvision.*:UserWarning",
+    # temporary in-memory SQLite databases created inside tests are not
+    # always closed explicitly; harmless, they disappear with the test
+    "ignore:unclosed database:ResourceWarning",
+]
+
+[tool.coverage.run]
+source = ["app"]
+
+[tool.coverage.report]
+# Lines marked "pragma: no cover" need real infrastructure (database, S3)
+exclude_lines = ["pragma: no cover", "if __name__ == .__main__.:"]
